@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <iostream>
+#include <math.h>
 
 class SinglyLinkedListNode {
 private:
@@ -48,6 +49,8 @@ public:
     virtual void addBeginning(int data) = 0;
     virtual bool search(int data) = 0;
     virtual void deleteNode(int data) = 0;
+    virtual void deleteEnd() = 0;
+    virtual void deleteFirst() = 0;
     virtual ~AbstractLinkedList() {}
 };
 
@@ -60,6 +63,8 @@ public:
     void addBeginning(int data);
     bool search(int data);
     void deleteNode(int data);
+    void deleteEnd();
+    void deleteFirst();
     ~SinglyLinkedList();
 };
 
@@ -74,7 +79,18 @@ public:
     void addBeginning(int data);
     bool search(int data);
     void deleteNode(int data);
+    void deleteEnd();
+    void deleteFirst();
     ~DoublyLinkedList();
 };
 
-#endif 
+class RandomFactory{
+public:
+    RandomFactory(){}
+    AbstractLinkedList * getList() const {
+        if (!(rand() % 2)) return new SinglyLinkedList();
+        return new DoublyLinkedList();
+    }
+};
+
+#endif

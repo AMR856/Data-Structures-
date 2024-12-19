@@ -64,6 +64,30 @@ void SinglyLinkedList:: deleteNode(int data){
     size--;
 }
 
+void SinglyLinkedList:: deleteFirst(){
+    if (head == nullptr){
+        std::cout << "The linked list is empty" << std::endl;
+        return;
+    }
+    SinglyLinkedListNode *temp = head;
+    head = head->getNext();
+    delete temp;
+    size--;
+}
+
+void SinglyLinkedList:: deleteEnd(){
+    if (head == nullptr){
+        std::cout << "The linked list is empty" << std::endl;
+        return;
+    }
+    SinglyLinkedListNode *current = head;
+    while (current->getNext()->getNext() != nullptr) current = current->getNext();
+    SinglyLinkedListNode *temp = current->getNext();
+    current->setNext(nullptr);
+    delete temp;
+    size--;
+}
+
 SinglyLinkedList:: ~SinglyLinkedList(){
     SinglyLinkedListNode* current = head;
     while (current != nullptr) {
