@@ -1,109 +1,80 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <iostream>
 
-class Node {
+class SinglyLinkedListNode {
 private:
     int data;
-    Node* next;
+    SinglyLinkedListNode* next;
 public:
-    Node(int d, Node* next = nullptr) {
-        this->data = d;
-        this->next = next;
-    }
-    ~Node() {}
-    int getData() const {
-        return data;
-    }
-    void setData(int d) {
-        data = d;
-    }
-    Node* getNext() const {
-        return next;
-    }
-    void setNext(Node* nextNode) {
-        next = nextNode;
-    }
+    SinglyLinkedListNode(int data) : data(data), next(nullptr){}
+    SinglyLinkedListNode(int data, SinglyLinkedListNode *next): data(data), next(next){}
+    ~SinglyLinkedListNode() {}
+    int getData() const {return data;}
+    void setData(int d) {data = d;}
+    SinglyLinkedListNode* getNext() const {return next;}
+    void setNext(SinglyLinkedListNode* nextNode) {next = nextNode;}
 };
 
-class LinkedList {
+class DoublyLinkedListNode {
 private:
-    int size;
-    Node* head;
+    int data;
+    DoublyLinkedListNode *next;
+    DoublyLinkedListNode *prev;
 public:
-    LinkedList() {
-        size = 0;
-        head = nullptr;
-    }
-    int getSize() const {
-        return size;
-    }
-    bool isEmpty() const {
-        return size == 0;
-    }
-    void addNodeLast(int data) {
-        Node* newNode = new Node(data);
-        if (head == nullptr) {
-            head = newNode;
-        } else {
-            Node* current = head;
-            while (current->getNext() != nullptr) {
-                current = current->getNext();
-            }
-            current->setNext(newNode);
-        }
-        size++;
-    }
-    void traverse(){
-        if (head == nullptr) std::cout << "Linked list is empty" << std::endl;
-        Node* current = head;
-        while (current != nullptr){
-            std::cout << current->getData() << " "; 
-            current = current->getNext();
-        }
-        std::cout << std::endl;
-    }
-    void addBeginning(int data){
-        Node* newNode = new Node(data);
-        newNode->setNext(head);
-        head = newNode;
-    }
-    bool search(int data){
-        if (head == nullptr) std::cout << "Linked list is empty" << std::endl;
-        Node* current = head;
-        while (current->getData() != data && current->getNext() != nullptr) current = current->getNext();
-        if (current->getData() != data && current->getNext() == nullptr) return false;
-        return true;
-    }
-    void deleteNode(int data) {
-        if (head == nullptr) {
-            std::cout << "List is empty. Cannot delete.\n";
-            return;
-        }
-        if (head->getData() == data) {
-            Node* temp = head;
-            head = head->getNext();
-            delete temp;
-            size--;
-            return;
-        }
-        Node* current = head;
-        while (current->getNext() != nullptr && current->getNext()->getData() != data) {
-            current = current->getNext();
-        }
-        if (current->getNext() == nullptr) { 
-            std::cout << "Node with data " << data << " not found.\n";
-            return;
-        }
-        Node* temp = current->getNext();
-        current->setNext(temp->getNext());
-        delete temp;
-        size--;
-    }
-    ~LinkedList() {
-        Node* current = head;
-        while (current != nullptr) {
-            Node* temp = current;
-            current = current->getNext();
-            delete temp;
-        }
-    }
+DoublyLinkedListNode(int data) : data(data), next(nullptr), prev(nullptr){}
+    DoublyLinkedListNode(int data,
+    DoublyLinkedListNode *next) : data(data), next(next),  prev(nullptr){}
+    DoublyLinkedListNode(int data,
+    DoublyLinkedListNode *next,
+    DoublyLinkedListNode *prev) : data(data), next(next), prev(prev) {}
+    void setNext(DoublyLinkedListNode* nextNode) {next = nextNode;}
+    DoublyLinkedListNode* getNext() const {return next;}
+    void setPrev(DoublyLinkedListNode *prevNode){prev = prevNode;}
+    DoublyLinkedListNode* getPrev() const {return prev;}
+    int getData() const {return data;}
+    void setData(int d) {data = d;}
+};  
+
+class AbstractLinkedList {
+protected:
+    int size;
+public:
+    int getSize() const {return size;}
+    bool isEmpty() const {return size == 0;}
+    virtual void addNodeLast(int data) = 0;
+    virtual void traverse() = 0;
+    virtual void addBeginning(int data) = 0;
+    virtual bool search(int data) = 0;
+    virtual void deleteNode(int data) = 0;
+    virtual ~AbstractLinkedList() {}
 };
+
+class SinglyLinkedList : public AbstractLinkedList {
+private:
+    SinglyLinkedListNode *head;
+public:
+    void addNodeLast(int data) override;
+    void traverse() override;
+    void addBeginning(int data);
+    bool search(int data);
+    void deleteNode(int data);
+    ~SinglyLinkedList();
+};
+
+class DoublyLinkedList : public AbstractLinkedList {
+private:
+    DoublyLinkedListNode *head;
+    DoublyLinkedListNode *tail;
+public:
+    void addNodeLast(int data) override;
+    void traverse() override;
+    void traverseBackward();
+    void addBeginning(int data);
+    bool search(int data);
+    void deleteNode(int data);
+    ~DoublyLinkedList();
+};
+
+#endif 
