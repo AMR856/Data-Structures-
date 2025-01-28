@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [ -e "main" ]; then
+    rm "main"
+fi
+g++ *.cpp -o main

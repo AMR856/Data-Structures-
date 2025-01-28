@@ -4,19 +4,25 @@
 #include <iostream>
 #include <math.h>
 
-class SinglyLinkedListNode {
+class DoublyLinkedListNode {
 private:
     int data;
-    SinglyLinkedListNode* next;
+    DoublyLinkedListNode *next;
+    DoublyLinkedListNode *prev;
 public:
-    SinglyLinkedListNode(int data) : data(data), next(nullptr){}
-    SinglyLinkedListNode(int data, SinglyLinkedListNode *next): data(data), next(next){}
-    ~SinglyLinkedListNode() {}
+DoublyLinkedListNode(int data) : data(data), next(nullptr), prev(nullptr){}
+    DoublyLinkedListNode(int data,
+    DoublyLinkedListNode *next) : data(data), next(next),  prev(nullptr){}
+    DoublyLinkedListNode(int data,
+    DoublyLinkedListNode *next,
+    DoublyLinkedListNode *prev) : data(data), next(next), prev(prev) {}
+    void setNext(DoublyLinkedListNode* nextNode) {next = nextNode;}
+    DoublyLinkedListNode* getNext() const {return next;}
+    void setPrev(DoublyLinkedListNode *prevNode){prev = prevNode;}
+    DoublyLinkedListNode* getPrev() const {return prev;}
     int getData() const {return data;}
     void setData(int d) {data = d;}
-    SinglyLinkedListNode* getNext() const {return next;}
-    void setNext(SinglyLinkedListNode* nextNode) {next = nextNode;}
-};
+};  
 
 class AbstractLinkedList {
 protected:
@@ -34,18 +40,21 @@ public:
     virtual ~AbstractLinkedList() {}
 };
 
-class SinglyLinkedList : public AbstractLinkedList {
+
+class DoublyLinkedList : public AbstractLinkedList {
 private:
-    SinglyLinkedListNode *head;
+    DoublyLinkedListNode *head;
+    DoublyLinkedListNode *tail;
 public:
     void addNodeLast(int data) override;
     void traverse() override;
+    void traverseBackward();
     void addBeginning(int data);
     bool search(int data);
     void deleteNode(int data);
     void deleteEnd();
     void deleteFirst();
-    ~SinglyLinkedList();
+    ~DoublyLinkedList();
 };
 
 #endif

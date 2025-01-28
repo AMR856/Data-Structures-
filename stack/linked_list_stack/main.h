@@ -22,14 +22,7 @@ class AbstractLinkedList {
 protected:
     int size;
 public:
-    int getSize() const {return size;}
-    bool isEmpty() const {return size == 0;}
-    virtual void addNodeLast(int data) = 0;
-    virtual void traverse() = 0;
     virtual void addBeginning(int data) = 0;
-    virtual bool search(int data) = 0;
-    virtual void deleteNode(int data) = 0;
-    virtual void deleteEnd() = 0;
     virtual void deleteFirst() = 0;
     virtual ~AbstractLinkedList() {}
 };
@@ -38,14 +31,33 @@ class SinglyLinkedList : public AbstractLinkedList {
 private:
     SinglyLinkedListNode *head;
 public:
-    void addNodeLast(int data) override;
-    void traverse() override;
     void addBeginning(int data);
-    bool search(int data);
-    void deleteNode(int data);
-    void deleteEnd();
+    SinglyLinkedListNode *getHead(){return head;}
     void deleteFirst();
     ~SinglyLinkedList();
+};
+
+class AbstractStack {
+    protected:
+        int size;
+    public:
+        virtual void push(int data) = 0;
+        int stackSize(){return size;}
+        bool isEmpty(){return size == 0;}
+        virtual int pop() = 0;
+        virtual int top() = 0;
+        ~AbstractStack(){}
+};
+
+class LinkedListStack : public AbstractStack{
+    private:
+        SinglyLinkedList stack;
+    public:
+        LinkedListStack();
+        void push(int data) override;
+        int pop() override;
+        int top() override;
+        ~LinkedListStack();
 };
 
 #endif
